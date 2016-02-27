@@ -28,15 +28,15 @@ int main(int argc, char *argv[])
     printf("Opened %s with %d lumps.\n", &signature, numFiles);
     fseek(fp, dirStart, SEEK_SET);
 
-    printf("   Offset      Size  Filename\n");
-    printf("-----------------------------\n");
+    printf(" Num    Offset      Size  Filename\n");
+    printf("----------------------------------\n");
 
-    for(int i = 0; !feof(fp); i++){
+    for(int i = 0; i < numFiles; i++){
       if(fread(&offset, 4, 1, fp) &&
          fread(&size, 4, 1, fp) &&
          fread(&lumpname, 8, 1, fp))
       {
-        printf("%9d %9d %9s \n", offset, size, lumpname);
+        printf("%4d %9d %9d %9s \n", (i + 1), offset, size, lumpname);
       }
     }
     fclose(fp);
