@@ -6,12 +6,12 @@ char signature[4] = {0};
 int numFiles, dirStart;
 
 int offset, size;
-char lumpname[9] = {0};
+char lumpname[9];
 
 int main(int argc, char *argv[])
 {
     if(argc < 2){
-        puts("Usage: ./wadedit filename.wad [start from]");
+        puts("Usage: ./wadedit filename.wad [sta from]");
         return 1;
     }
 
