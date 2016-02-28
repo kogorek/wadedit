@@ -2,7 +2,7 @@
 
 FILE *fp;
 
-char signature[5] = {0};
+char signature[4] = {0};
 int numFiles, dirStart;
 
 int offset, size;
@@ -11,9 +11,10 @@ char lumpname[9] = {0};
 int main(int argc, char *argv[])
 {
     if(argc < 2){
-        puts("Usage: ./wadedit filename.wad");
+        puts("Usage: ./wadedit filename.wad [start from]");
         return 1;
     }
+
     fp = fopen(argv[1], "rb");
     if(fp == NULL){
         puts("File not found");
@@ -33,7 +34,7 @@ int main(int argc, char *argv[])
 
     for(int i = 1; i <= numFiles; i++){
       if(fread(&offset, 4, 1, fp) && fread(&size, 4, 1, fp) && fread(&lumpname, 8, 1, fp)){
-        printf("%4d %9d %9d %9s \n", i, offset, size, lumpname);
+            printf("%4d %9d %9d %9s \n", i, offset, size, lumpname);
       }
     }
     fclose(fp);
