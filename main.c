@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include "lump.c"
 
 FILE *fp;
 
