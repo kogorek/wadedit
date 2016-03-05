@@ -6,11 +6,8 @@ FILE *fp;
 char signature[4] = {0};
 int numFiles, dirStart;
 
-int offset, size;
-char lumpname[9];
-
 const char* lump_getNameIndex(FILE*, int);
-int * lump_getSize(FILE*, int);
+int lump_getSize(FILE*, int);
 
 int main(int argc, char *argv[])
 {
@@ -33,7 +30,7 @@ int main(int argc, char *argv[])
     fread(&dirStart, 4, 1, fp);
     printf("Opened %s with %d lumps.\n", signature, numFiles);
     for(int i = 0; i < numFiles; i++){
-        printf("%9s   %9d\n", lump_getNameIndex(fp, i+1), lump_getSize(fp, i+1));
+        printf("%4d %9s   %9d\n", i+1, lump_getNameIndex(fp, i+1), lump_getSize(fp, i+1));
     }
     fclose(fp);
     return 0;
@@ -41,9 +38,9 @@ int main(int argc, char *argv[])
 
 const char* lump_getNameIndex(FILE* fp, int num)
 {
-    if(num == 0){
-        puts("bad input");
-        return 1;
+    if(num == 0 || num > numFiles){
+        puts("there is no lump with that index");
+        return 0;
     }
     static char name[9] = {0};
 
@@ -58,9 +55,10 @@ const char* lump_getNameIndex(FILE* fp, int num)
     return 0;
 }
 
-int* lump_getSize(FILE* fp, int index){
-    if(index == 0){
-        puts("bad input");
+int lump_getSize(FILE* fp, int index)
+{
+    if(index == 0 || index > numFiles){
+        puts("there is no lump with that index");
         return 1;
     }
     static int size;
