@@ -59,7 +59,12 @@ const char* lump_getNameIndex(FILE* fp, int num)
 }
 
 int* lump_getSize(FILE* fp, int index){
+    if(index == 0){
+        puts("bad input");
+        return 1;
+    }
     static int size;
+
     fseek(fp, dirStart + 4, SEEK_SET);
     for(int i = 1; i <= numFiles; i++){
         if(i == index){
