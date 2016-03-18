@@ -1,74 +1,23 @@
 #include <stdio.h>
+#include "wad.h"
+#include "lump.h"
 
 FILE *fp;
 
-char signature[4] = {0};
-int numFiles, dirStart;
-
-const char* lump_getNameIndex(FILE*, int);
-int lump_getSize(FILE*, int);
 
 int main(int argc, char *argv[])
 {
-
-    if(argc != 2){
-        puts("Usage: ./wadedit filename.wad");
+    fp = fopen("/home/moksou/demblues.wad", "rb");
+    if(fp == NULL){
+        puts("Error: no such file");
         return 1;
     }
 
-    fp = fopen(argv[1], "rb");
-    if(fp == NULL){
-        puts("File not found");
+    if(!wad_checkheader(fp)){
+        puts("Error: bad header");
         return 2;
     }
-    if(!fread(&signature, 4, 1, fp) || (strcmp(&signature, "IWAD") && strcmp(&signature, "PWAD"))){
-        puts("bad signature");
-        return 3;
-    }
-    fread(&numFiles, 4, 1, fp);
-    fread(&dirStart, 4, 1, fp);
-    printf("Opened %s with %d lumps.\n", signature, numFiles);
-    for(int i = 0; i < numFiles; i++){
-        printf("%4d %9s   %9d\n", i+1, lump_getNameIndex(fp, i+1), lump_getSize(fp, i+1));
-    }
+    wad_listentries(fp);
     fclose(fp);
-    return 0;
-}
-
-const char* lump_getNameIndex(FILE* fp, int num)
-{
-    if(num == 0 || num > numFiles){
-        puts("there is no lump with that index");
-        return 0;
-    }
-    static char name[9] = {0};
-
-    fseek(fp, dirStart + 8, SEEK_SET);
-    for(int i = 1; i <= numFiles; i++){
-        if(i == num){
-            fread(&name, 8, 1, fp);
-            return name;
-        }
-        fseek(fp, 16, SEEK_CUR);
-    }
-    return 0;
-}
-
-int lump_getSize(FILE* fp, int index)
-{
-    if(index == 0 || index > numFiles){
-        puts("there is no lump with that index");
-        return 1;
-    }
-    static int size;
-
-    fseek(fp, dirStart + 4, SEEK_SET);
-    for(int i = 1; i <= numFiles; i++){
-        if(i == index){
-            fread(&size, 4, 1, fp);
-            return size;
-        }
-        fseek(fp, 16, SEEK_CUR);
-    }
     return 0;
 }
