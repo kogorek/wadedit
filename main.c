@@ -2,7 +2,7 @@
 #include "wad.h"
 #include "lump.h"
 
-FILE *fp;
+FILE *fp = NULL;
 
 
 int main(int argc, char *argv[])
@@ -14,10 +14,13 @@ int main(int argc, char *argv[])
     }
 
     if(!wad_checkheader(fp)){
-        puts("Error: bad header");
         return 2;
     }
-    wad_listentries(fp);
+    //wad_listentries(fp);
+
+    struct lump* test;
+    test = lump_get(fp, 19);
+    if(lump_extract(fp, test)) puts("asd");
     fclose(fp);
     return 0;
 }
