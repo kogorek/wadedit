@@ -1,7 +1,7 @@
 struct lump {
     int offset;
     int size;
-    char *name;
+    char name[9];
 };
 
 

@@ -7,16 +7,20 @@ FILE *fp = NULL;
 
 int main(int argc, char *argv[])
 {
-    fp = fopen("/home/moksou/demblues.wad", "rb");
+    fp = fopen(argv[argc - 1], "rb");
+    if(argc < 2){
+        puts("Usage: \n");
+        return 1;
+    }
     if(fp == NULL){
         puts("Error: no such file");
-        return 1;
+        return 2;
     }
 
     if(!wad_checkheader(fp)){
-        return 2;
+        return 3;
     }
-    //wad_listentries(fp);
+    wad_listentries(fp);
 
     struct lump* test;
     test = lump_get(fp, 19);

@@ -6,7 +6,6 @@ struct lump* lump_get(FILE* fp, int index)
 {
     static struct lump target, *stpt;
     stpt = &target;
-    target.name = (char*)malloc(sizeof(char)*9);
 
     fseek(fp, dirStart, SEEK_SET);
     for(int i = 1; i <= numFiles; i++){
@@ -30,7 +29,9 @@ int lump_extract(FILE* fp, struct lump* target)
         FILE* fp2 = fopen(strcat(target->name, ".lmp"), "wb");
         fwrite(buffer, 1, target->size, fp2);
         fclose(fp2);
+        free(buffer);
         printf("Lump %s successfully extracted. \n", target->name);
+        return 1;
     }
     return 0;
 }
