@@ -3,5 +3,4 @@ int numFiles;
 int dirStart;
 
 int wad_checkheader(FILE*);
-void wad_listentries(FILE*);
 
